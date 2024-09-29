@@ -1,0 +1,14 @@
+{
+  "name": "@tenbin/basic-jest",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@swc/core": "1.7.26",
+    "@swc/jest": "0.2.36",
+    "@tenbin/jest": "workspace:*",
+    "@types/jest": "29.5.13",
+    "jest": "29.7.0"
+  }
+}

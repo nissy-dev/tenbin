@@ -1,0 +1,32 @@
+name: examples workflow
+on:
+  push:
+
+jobs:
+  default-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1/3, 2/3, 3/3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run test
+        run: pnpm dlx jest --shard=${{ matrix.shard }}
+        working-directory: examples/default-jest
+
+  use-tenbin-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1/3, 2/3, 3/3]
+        directory:
+          - examples/basic-jest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run build
+        run: pnpm run build
+      - name: Run test
+        run: pnpm dlx jest --shard=${{ matrix.shard }}
+        working-directory: ${{ matrix.directory }}

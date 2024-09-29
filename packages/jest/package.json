@@ -1,0 +1,26 @@
+{
+  "name": "@tenbin/jest",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nissy-dev/tenbin.git",
+    "directory": "packages/jest-tenbin-sequencer"
+  },
+  "license": "MIT",
+  "exports": {
+    "./reporter": "./dist/reporter.js",
+    "./sequencer": "./dist/sequencer.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@jest/test-sequencer": "^29.7.0"
+  },
+  "devDependencies": {
+    "@jest/reporters": "29.7.0",
+    "@jest/test-result": "29.7.0"
+  }
+}

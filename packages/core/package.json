@@ -1,0 +1,24 @@
+{
+  "name": "@tenbin/core",
+  "private": true,
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nissy-dev/tenbin.git",
+    "directory": "packages/jest-tenbin-sequencer"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "2.1.1"
+  }
+}

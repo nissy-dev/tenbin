@@ -1,0 +1,13 @@
+{
+  "name": "tenbin",
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "lint": "biome ci",
+    "test": "pnpm --filter './packages/**' test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.2",
+    "typescript": "5.6.2"
+  }
+}
