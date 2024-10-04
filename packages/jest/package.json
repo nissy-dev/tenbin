@@ -17,7 +17,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@jest/test-sequencer": "^29.7.0"
+    "@jest/test-sequencer": "^29.7.0",
+    "@tenbin/core": "workspace:*"
   },
   "devDependencies": {
     "@jest/reporters": "29.7.0",

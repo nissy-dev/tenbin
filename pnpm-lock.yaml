@@ -59,6 +59,9 @@ importers:
       '@jest/test-sequencer':
         specifier: ^29.7.0
         version: 29.7.0
+      '@tenbin/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       '@jest/reporters':
         specifier: 29.7.0

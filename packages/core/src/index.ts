@@ -54,7 +54,6 @@ export function partition<T>(
       diff: diff(newPartition.map((item) => sum(item, keyFunc))),
     });
   }
-  console.log(partitions[0].partition.map((item) => sortBy(item, keyFunc)));
   return partitions[0].partition.map((item) => sortBy(item, keyFunc));
 }
 

@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { partition } from "./index";
 
 const range = (start: number, end: number) => {
-  const array = [];
+  const array: number[] = [];
   for (let i = start; i <= end; i++) {
     array.push(i);
   }
