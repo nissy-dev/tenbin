@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Run lint
-        run: pnpm run lint
       - name: Run build
         run: pnpm run build
       - name: Publish

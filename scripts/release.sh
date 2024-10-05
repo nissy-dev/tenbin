@@ -9,7 +9,7 @@ for PKG in packages/* ; do
     continue
   fi
   pushd $PKG
-  echo "Publishing $PKG...."
+  echo "Publishing $PKG ..."
   cp ../../LICENSE .
   pnpm publish --access public --no-git-checks
   popd > /dev/null
