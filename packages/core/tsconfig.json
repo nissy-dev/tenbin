@@ -6,7 +6,9 @@
     "target": "ES2017",
     "moduleResolution": "node",
     "skipLibCheck": true,
+    "declaration": true,
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
 }
