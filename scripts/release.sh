@@ -5,9 +5,6 @@ set -ueo pipefail
 
 # Release packages
 for PKG in packages/* ; do
-  if [[ $PKG == "packages/core" ]] ; then
-    continue
-  fi
   pushd $PKG
   echo "Publishing $PKG ..."
   cp ../../LICENSE .

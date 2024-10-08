@@ -1,10 +1,10 @@
 {
   "name": "@tenbin/jest",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/nissy-dev/tenbin.git",
-    "directory": "packages/jest-tenbin-sequencer"
+    "directory": "packages/jest"
   },
   "license": "MIT",
   "exports": {
