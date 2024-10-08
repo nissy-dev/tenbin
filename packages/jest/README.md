@@ -1,6 +1,6 @@
 # @tenbin/jest
 
-`@tenbin/jest` provides custom reporter and sequencer for minimizing the difference of execution time in each shard.
+`@tenbin/jest` provides custom reporter and sequencer for Jest.
 
 ## Usage
 
