@@ -12,11 +12,11 @@ npm i @tenbin/jest -D
 
 Jest configuration:
 
-```diff
+```js
 /** @type {import('jest').Config} */
 const config = {
-+  testSequencer: "@tenbin/jest/sequencer",
-+  reporters: ["default", "@tenbin/jest/reporter"],
+  testSequencer: "@tenbin/jest/sequencer",
+  reporters: ["default", "@tenbin/jest/reporter"],
 };
 
 module.exports = config;
