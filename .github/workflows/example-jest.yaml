@@ -1,4 +1,4 @@
-name: examples workflow
+name: examples jest workflow
 on:
   push:
 
@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - name: Run test
-        run: pnpm dlx jest --shard=${{ matrix.shard }}
-        working-directory: examples/default-jest
+        run: pnpx jest --shard=${{ matrix.shard }}
+        working-directory: examples/jest
 
   use-tenbin-jest:
     runs-on: ubuntu-latest
@@ -22,8 +22,6 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3]
         shardTotal: [3]
-        directory:
-          - examples/basic-jest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -41,17 +39,17 @@ jobs:
         run: |
           if [ -e ./tenbin-report.json ]; then
             jq . tenbin-report.json
-            cp tenbin-report.json ${{ matrix.directory }}
+            cp tenbin-report.json examples/jest
           fi
       - name: Run test
-        run: pnpm dlx jest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-        working-directory: ${{ matrix.directory }}
+        run: pnpx jest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} -c jest-with-tenbin.config.js
+        working-directory: examples/jest
       - name: Upload tenbin-report.json
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
         with:
           name: tenbin-report-${{ matrix.shardIndex }}
-          path: ${{ matrix.directory }}/tenbin-report.json
+          path: examples/jest/tenbin-report.json
 
   merge-and-cache-tenbin-report:
     if: github.ref_name == 'main'

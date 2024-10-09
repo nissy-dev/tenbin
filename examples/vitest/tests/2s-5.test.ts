@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { sleep } from "./helper";
 
 describe("test-2s-5-a", () => {

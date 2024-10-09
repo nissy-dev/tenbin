@@ -4,10 +4,12 @@
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
     "lint": "biome ci",
-    "test": "pnpm --filter './packages/**' test"
+    "test": "pnpm --filter './packages/**' test",
+    "typecheck": "pnpm --filter './packages/**' typecheck"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
+    "tsup": "8.3.0",
     "typescript": "5.6.2"
   }
 }

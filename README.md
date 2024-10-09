@@ -1,4 +1,4 @@
-# tenbin
+# Tenbin ⚖️
 
 Tenbin provides tools for minimizing the differences in execution times across shards.
 
