@@ -1,5 +1,5 @@
 {
-  "name": "@tenbin/jest",
+  "name": "@tenbin/jest-example",
   "private": true,
   "scripts": {
     "test": "jest"

@@ -1,6 +1,6 @@
 # Tenbin ⚖️
 
-Tenbin provides tools for minimizing the differences in test execution times across shards.
+Tenbin provides tools to minimize the differences in test execution times across shards.
 
 ## Usage
 
@@ -11,7 +11,7 @@ Tenbin provides tools for minimizing the differences in test execution times acr
 
 A typical test runner implements a sharding feature that splits tests to run on different machines. However, the sharding algorithm often randomly splits tests, leading to uneven execution times across shards.
 
-Tenbin provides tools for minimizing the differences in execution time across shards.
+Tenbin provides tools to minimize the differences in execution time across shards.
 It uses the execution times of past test run when splitting tests.
 
 For example:

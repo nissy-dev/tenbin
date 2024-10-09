@@ -1,5 +1,5 @@
 {
-  "name": "@tenbin/basic-vitest",
+  "name": "@tenbin/vitest-example",
   "private": true,
   "scripts": {
     "test": "vitest"
