@@ -1,25 +1,30 @@
-# @tenbin/jest
+# @tenbin/vitest
 
-`@tenbin/jest` provides custom reporter and sequencer for Jest.
+`@tenbin/vitest` provides custom reporter and sequencer for Vitest.
 
 ## Usage
 
 Install:
 
 ```sh
-npm i @tenbin/jest -D
+npm i @tenbin/vitest -D
 ```
 
-Jest configuration:
+Vitest configuration:
 
-```diff
-/** @type {import('jest').Config} */
-const config = {
-+  testSequencer: "@tenbin/jest/sequencer",
-+  reporters: ["default", "@tenbin/jest/reporter"],
-};
+```ts
+import TenbinReporter from "@tenbin/vitest/reporter";
+import TenbinSequencer from "@tenbin/vitest/sequencer";
+import { defineConfig } from "vitest/config";
 
-module.exports = config;
+export default defineConfig({
+  test: {
+    reporters: [new TenbinReporter()],
+    sequence: {
+      sequencer: TenbinSequencer,
+    },
+  },
+});
 ```
 
 GitHub Actions:
@@ -30,7 +35,7 @@ on:
   push:
 
 jobs:
-  use-tenbin-jest:
+  use-tenbin-vitest:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -51,7 +56,7 @@ jobs:
       - name: Run build
         run: pnpm run build
       # Restore the tenbin-report.json file that records the execution time of each test.
-      # @tenbin/jest/sequencer use this file for sharding.
+      # @tenbin/vitest/sequencer use this file for sharding.
       - name: Restore tenbin-report.json
         id: tenbin-report-cache
         uses: actions/cache/restore@v4
@@ -61,8 +66,8 @@ jobs:
           restore-keys: |
             tenbin-report-*
       - name: Run test
-        run: pnpx jest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      # @tenbin/jest/reporter generates tenbin-report.json of each tests.
+        run: pnpx vitest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      # @tenbin/vitest/reporter generates tenbin-report.json of each tests.
       - name: Upload tenbin-report.json
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
@@ -74,7 +79,7 @@ jobs:
   cache-tenbin-report:
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
-    needs: [use-tenbin-jest]
+    needs: [use-tenbin-vitest]
     steps:
       - uses: actions/download-artifact@v4
         with:

@@ -8,9 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - name: Run lint
-        run: pnpm run lint
       - name: Run build
         run: pnpm run build
+      - name: Run lint
+        run: pnpm run lint
+      - name: Run typecheck
+        run: pnpm run typecheck
       - name: Run test
         run: pnpm run test

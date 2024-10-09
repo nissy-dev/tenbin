@@ -1,0 +1,11 @@
+{
+  "name": "@tenbin/basic-vitest",
+  "private": true,
+  "scripts": {
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@tenbin/vitest": "workspace:*",
+    "vitest": "2.1.2"
+  }
+}
