@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import type { RunnerTestFile } from "vitest/";
+import type { RunnerTestFile } from "vitest";
 import { DefaultReporter } from "vitest/reporters";
 
 const FILENAME = "tenbin-report.json";

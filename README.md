@@ -1,6 +1,6 @@
 # Tenbin ⚖️
 
-Tenbin provides tools for minimizing the differences in execution times across shards.
+Tenbin provides tools for minimizing the differences in test execution times across shards.
 
 ## Usage
 

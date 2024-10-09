@@ -55,7 +55,7 @@ jobs:
         run: pnpm install
       - name: Run build
         run: pnpm run build
-      # Restore the tenbin-report.json file that records the execution time of each test.
+      # Restore the tenbin-report.json file, which records the execution time of each test file.
       # @tenbin/vitest/sequencer use this file for sharding.
       - name: Restore tenbin-report.json
         id: tenbin-report-cache
@@ -67,7 +67,7 @@ jobs:
             tenbin-report-*
       - name: Run test
         run: pnpx vitest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      # @tenbin/vitest/reporter generates tenbin-report.json of each tests.
+      # @tenbin/vitest/reporter generates a tenbin-report.json for each shard.
       - name: Upload tenbin-report.json
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
@@ -75,7 +75,7 @@ jobs:
           name: tenbin-report-${{ matrix.shardIndex }}
           path: tenbin-report.json
 
-  # Merge and cache tenbin-report.json for sharding at the next test.
+  # Merge and cache tenbin-report.json
   cache-tenbin-report:
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
