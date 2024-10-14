@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@jest/test-sequencer": "^29.7.0",
-    "@tenbin/core": "workspace:*"
+    "@tenbin/core": "workspace:*",
+    "picocolors": "^1.1.0"
   },
   "devDependencies": {
     "@jest/reporters": "29.7.0",
