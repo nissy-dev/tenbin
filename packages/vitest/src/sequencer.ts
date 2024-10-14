@@ -2,8 +2,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { partition } from "@tenbin/core";
 import { BaseSequencer, type Vitest, type WorkspaceSpec } from "vitest/node";
+import { REPORT_FILENAME, logger } from "./utils";
 
-const FILENAME = "tenbin-report.json";
 // if value is 0, partition won't work correctly
 const FALLBACK_DURATION = 0.1;
 
@@ -34,14 +34,13 @@ export default class TenbinSequencer extends BaseSequencer {
   }
 
   private loadDurations(): Record<string, number> {
+    const filePath = path.join(process.cwd(), REPORT_FILENAME);
     try {
-      return JSON.parse(
-        fs.readFileSync(path.join(process.cwd(), FILENAME), "utf8"),
-      );
+      const durations = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      logger("Load tenbin-report.json successfully");
+      return durations;
     } catch (err) {
-      console.log(
-        "Failed to load tenbin-report.json, so sharding may be efficient",
-      );
+      logger(`Failed to load tenbin-report.json from ${filePath}`);
       return {};
     }
   }

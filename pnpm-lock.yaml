@@ -59,6 +59,9 @@ importers:
       '@tenbin/core':
         specifier: workspace:*
         version: link:../core
+      picocolors:
+        specifier: ^1.1.0
+        version: 1.1.0
     devDependencies:
       '@jest/reporters':
         specifier: 29.7.0
@@ -72,6 +75,9 @@ importers:
       '@tenbin/core':
         specifier: workspace:*
         version: link:../core
+      picocolors:
+        specifier: ^1.1.0
+        version: 1.1.0
       vitest:
         specifier: ^2.1.2
         version: 2.1.2(@types/node@22.7.4)

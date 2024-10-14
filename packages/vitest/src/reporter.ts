@@ -2,8 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import type { RunnerTestFile } from "vitest";
 import { DefaultReporter } from "vitest/reporters";
-
-const FILENAME = "tenbin-report.json";
+import { REPORT_FILENAME, logger } from "./utils";
 
 export default class TenbinReporter extends DefaultReporter {
   private durations: Record<string, number> = {};
@@ -13,15 +12,12 @@ export default class TenbinReporter extends DefaultReporter {
     for (const file of files) {
       this.durations[file.name] = this.getDuration(file) / 1000;
     }
+    const reportFilePath = path.join(process.cwd(), REPORT_FILENAME);
     try {
-      fs.writeFileSync(
-        path.join(process.cwd(), FILENAME),
-        JSON.stringify(this.durations),
-      );
-      console.log(
-        `Test durations written to ${path.join(process.cwd(), FILENAME)}`,
-      );
+      fs.writeFileSync(reportFilePath, JSON.stringify(this.durations));
+      logger(`tenbin-report.json written to ${reportFilePath}`);
     } catch (err) {
+      logger("Failed to generate tenbin-report.json");
       console.error(err);
     }
   }

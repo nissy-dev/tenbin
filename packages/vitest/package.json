@@ -26,7 +26,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "vitest": "^2.1.2",
-    "@tenbin/core": "workspace:*"
+    "@tenbin/core": "workspace:*",
+    "picocolors": "^1.1.0",
+    "vitest": "^2.1.2"
   }
 }
