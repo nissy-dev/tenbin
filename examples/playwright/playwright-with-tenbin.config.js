@@ -8,5 +8,5 @@ export default defineConfig({
     pattern: ["tests/**.test.ts"],
     reportFile: "./test-results.json",
   }),
-  reporter: ["blob"],
+  reporter: [["blob"]],
 });

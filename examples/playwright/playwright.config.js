@@ -4,5 +4,5 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   testMatch: ["tests/**.test.ts"],
-  reporter: [["json", { outputFile: "test-results.json" }]],
+  reporter: [["blob"]],
 });
