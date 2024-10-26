@@ -47,7 +47,7 @@ jobs:
         working-directory: examples/playwright
         env:
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-          PWTEST_BLOB_REPORT_NAME: report-${{ matrix.shardIndex }}
+          REPORT_FILE_NAME: report-${{ matrix.shardIndex }}.zip
       - name: Upload blob report
         uses: actions/upload-artifact@v4
         with:
