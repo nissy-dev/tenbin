@@ -43,7 +43,6 @@ jobs:
       - name: Run test
         run: |
           pnpm exec playwright test -c playwright-with-tenbin.config.js
-          ls -l blob-report
         working-directory: examples/playwright
         env:
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
@@ -67,9 +66,7 @@ jobs:
           merge-multiple: true
       - name: Merge json reports
         run: |
-          ls -l all-blob-reports
           pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
-          jq . test-results.json
       - name: Cache test-results.json
         uses: actions/cache/save@v4
         with:

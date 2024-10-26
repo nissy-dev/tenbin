@@ -18,10 +18,11 @@ import { splitTests } from "@tenbin/playwright";
 
 export default defineConfig({
   testMatch: splitTests({
+    shard: process.env.TENBIN_SHARD,
     pattern: ["tests/**.test.ts"],
     reportFile: "./test-results.json",
   }),
-  reporter: [["blob"]],
+  reporter: [["blob", { fileName: process.env.REPORT_FILE_NAME }]],
 });
 ```
 
@@ -65,8 +66,9 @@ jobs:
       - name: Run test
         run: pnpm exec playwright test -c playwright-with-tenbin.config.js
         env:
-          # splitTests function use this environment variable
+          # splitTests function use these environment variables
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+          REPORT_FILE_NAME: report-${{ matrix.shardIndex }}.zip
       # see: https://playwright.dev/docs/test-sharding#github-actions-example
       - name: Upload blob report
         if: github.ref_name == 'main'
