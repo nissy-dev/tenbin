@@ -37,13 +37,16 @@ jobs:
       - name: Copy test-results.json to working directory
         run: |
           if [ -e ./test-results.json ]; then
+            jq . test-results.json
             cp test-results.json examples/playwright
           fi
       - name: Run test
-        run: pnpm exec playwright test -c playwright-with-tenbin.config.js
+        run: |
+          pnpm exec playwright test -c playwright-with-tenbin.config.js
         working-directory: examples/playwright
         env:
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+          REPORT_FILE_NAME: report-${{ matrix.shardIndex }}.zip
       - name: Upload blob report
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
@@ -64,7 +67,8 @@ jobs:
           pattern: blob-report-*
           merge-multiple: true
       - name: Merge json reports
-        run: pnpm exec playwright merge-reports --reporter json ./all-blob-reports
+        run: |
+          pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
       - name: Cache test-results.json
         uses: actions/cache/save@v4
         with:

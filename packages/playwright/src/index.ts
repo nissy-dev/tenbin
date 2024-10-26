@@ -8,6 +8,7 @@ import { globSync } from "glob";
 const FALLBACK_DURATION = 0.1;
 
 type Config = {
+  shard: string;
   reportFile: string;
   pattern: string[];
 };
@@ -18,11 +19,10 @@ type Test = {
 };
 
 export function splitTests(config: Config): string[] {
-  const { reportFile, pattern } = config;
+  const { shard, reportFile, pattern } = config;
   const tests: Test[] = globSync(pattern).map((path) => ({ path }));
-  const { shardCount, shardIndex } = extractShardConfig();
+  const { shardCount, shardIndex } = extractShardConfig(shard);
   const durations = loadDurations(reportFile);
-
   for (const test of tests) {
     test.duration = durations[test.path] ?? FALLBACK_DURATION;
   }
@@ -39,20 +39,13 @@ type ShardConfig = {
   shardIndex: number;
 };
 
-function extractShardConfig(): ShardConfig {
-  const shardEnv = process.env.TENBIN_SHARD;
-  if (!shardEnv) {
-    throw new Error(
-      "Missing TENBIN_SHARD environment variable. @tenbin/playwright requires this variable.",
-    );
-  }
-
+function extractShardConfig(shard: string): ShardConfig {
   try {
-    const [shardIndex, shardCount] = shardEnv.split("/");
+    const [shardIndex, shardCount] = shard.split("/");
     return { shardCount: Number(shardCount), shardIndex: Number(shardIndex) };
   } catch (err) {
     throw new Error(
-      "TENBIN_SHARD variable is invalid. The value requires <shardCount>/<shardIndex> format.",
+      "The shard value is invalid. The value requires '<shardCount>/<shardIndex>' format.",
     );
   }
 }
@@ -76,12 +69,12 @@ function calculateDuration(suite: JSONReportSuite): number {
   for (const spec of suite.specs) {
     for (const test of spec.tests) {
       for (const result of test.results) {
-        duration += result.duration;
+        duration += result.duration / 1000;
       }
     }
   }
   for (const test of suite.suites ?? []) {
     duration += calculateDuration(test);
   }
-  return duration / 1000;
+  return duration;
 }

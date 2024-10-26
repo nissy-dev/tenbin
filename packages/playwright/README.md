@@ -13,12 +13,17 @@ npm i @tenbin/playwright -D
 Playwright configuration:
 
 ```js
-/** @type {import('jest').Config} */
-const config = {
-  // TODO
-};
+import { defineConfig } from "@playwright/test";
+import { splitTests } from "@tenbin/playwright";
 
-module.exports = config;
+export default defineConfig({
+  testMatch: splitTests({
+    shard: process.env.TENBIN_SHARD,
+    pattern: ["tests/**.test.ts"],
+    reportFile: "./test-results.json",
+  }),
+  reporter: [["blob", { fileName: process.env.REPORT_FILE_NAME }]],
+});
 ```
 
 GitHub Actions:
@@ -29,7 +34,7 @@ on:
   push:
 
 jobs:
-  use-tenbin-jest:
+  use-tenbin-playwright:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -49,41 +54,53 @@ jobs:
         run: pnpm install
       - name: Run build
         run: pnpm run build
-      # Restore the tenbin-report.json file, which records the execution time of each test file.
-      # @tenbin/jest/sequencer use this file for sharding.
-      - name: Restore tenbin-report.json
-        id: tenbin-report-cache
+      # Restore test-results.json file, which records the execution time of each test file.
+      # splitTests function use this file for sharding.
+      - name: Restore test-results.json
         uses: actions/cache/restore@v4
         with:
-          path: tenbin-report.json
-          key: tenbin-report
+          path: test-results.json
+          key: test-results
           restore-keys: |
-            tenbin-report-*
+            test-results-*
       - name: Run test
-        run: pnpx jest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      # @tenbin/jest/reporter generates a tenbin-report.json for each shard.
-      - name: Upload tenbin-report.json
+        run: pnpm exec playwright test -c playwright-with-tenbin.config.js
+        env:
+          # splitTests function use these environment variables
+          TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+          REPORT_FILE_NAME: report-${{ matrix.shardIndex }}.zip
+      # see: https://playwright.dev/docs/test-sharding#github-actions-example
+      - name: Upload blob report
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
         with:
-          name: tenbin-report-${{ matrix.shardIndex }}
-          path: tenbin-report.json
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
 
-  # Merge and cache tenbin-report.json
-  cache-tenbin-report:
+  # Merge and cache test-results.json
+  cache-test-results:
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
-    needs: [use-tenbin-jest]
+    needs: [use-tenbin-playwright]
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "9"
       - uses: actions/download-artifact@v4
         with:
-          path: tenbin-report
-          pattern: tenbin-report-*
-      - name: Merge  tenbin-report
-        run: jq -s add tenbin-report/**/tenbin-report.json > tenbin-report.json
-      - name: Cache tenbin-report.json
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+      - name: Merge blob reports into json
+        run: pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
+      - name: Cache test-results.json
         uses: actions/cache/save@v4
         with:
-          path: tenbin-report.json
-          key: tenbin-report-${{ github.run_id }}
+          path: test-results.json
+          key: test-results-${{ github.run_id }}
 ```
