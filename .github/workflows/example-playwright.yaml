@@ -45,14 +45,12 @@ jobs:
         env:
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - name: Upload blob report
-        if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
         with:
           name: blob-report-${{ matrix.shardIndex }}
           path: examples/playwright/blob-report
 
   merge-and-cache-test-results:
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     needs: [use-tenbin-playwright]
     steps:
@@ -64,7 +62,7 @@ jobs:
           pattern: blob-report-*
           merge-multiple: true
       - name: Merge json reports
-        run: pnpm exec playwright merge-reports --reporter json ./all-blob-reports
+        run: pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
       - name: Cache test-results.json
         uses: actions/cache/save@v4
         with:
