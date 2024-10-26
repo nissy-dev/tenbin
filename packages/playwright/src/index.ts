@@ -23,11 +23,9 @@ export function splitTests(config: Config): string[] {
   const tests: Test[] = globSync(pattern).map((path) => ({ path }));
   const { shardCount, shardIndex } = extractShardConfig(shard);
   const durations = loadDurations(reportFile);
-  console.log(durations);
   for (const test of tests) {
     test.duration = durations[test.path] ?? FALLBACK_DURATION;
   }
-  console.log(tests);
   const partitions = partition<Test>(
     tests,
     shardCount,
