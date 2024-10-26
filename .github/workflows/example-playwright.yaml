@@ -63,7 +63,10 @@ jobs:
           pattern: blob-report-*
           merge-multiple: true
       - name: Merge json reports
-        run: pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
+        run: |
+          ls -l all-blob-reports
+          pnpm dlx playwright merge-reports --reporter json ./all-blob-reports > test-results.json
+          jq . test-results.json
       - name: Cache test-results.json
         uses: actions/cache/save@v4
         with:
