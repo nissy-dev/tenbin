@@ -37,6 +37,7 @@ jobs:
       - name: Copy test-results.json to working directory
         run: |
           if [ -e ./test-results.json ]; then
+            jq . test-results.json
             cp test-results.json examples/playwright
           fi
       - name: Run test
