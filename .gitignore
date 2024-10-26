@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 tenbin-report.json
+test-results.json
+test-results

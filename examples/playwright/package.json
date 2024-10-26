@@ -1,0 +1,11 @@
+{
+  "name": "@tenbin/playwright-example",
+  "private": true,
+  "scripts": {
+    "test": "playwright"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.48.1",
+    "@tenbin/playwright": "workspace:*"
+  }
+}

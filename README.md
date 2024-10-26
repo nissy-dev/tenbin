@@ -6,6 +6,7 @@ Tenbin provides tools to minimize the differences in test execution times across
 
 - [Jest](./packages/jest/README.md)
 - [Vitest](./packages/vitest/README.md)
+- [Playwright](./packages/playwright/README.md)
 
 ## Why
 

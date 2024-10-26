@@ -1,0 +1,72 @@
+name: examples playwright workflow
+on:
+  push:
+
+jobs:
+  default-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1/3, 2/3, 3/3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run test
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}
+        working-directory: examples/playwright
+
+  use-tenbin-playwright:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run build
+        run: pnpm run build
+      - name: Restore test-results.json
+        uses: actions/cache/restore@v4
+        with:
+          path: test-results.json
+          key: test-results
+          restore-keys: |
+            test-results-*
+      - name: Copy test-results.json to working directory
+        run: |
+          if [ -e ./test-results.json ]; then
+            cp test-results.json examples/playwright
+          fi
+      - name: Run test
+        run: pnpm exec playwright test -c playwright-with-tenbin.config.js
+        working-directory: examples/playwright
+        env:
+          TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - name: Upload blob report
+        if: github.ref_name == 'main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: examples/playwright/blob-report
+
+  merge-and-cache-test-results:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    needs: [use-tenbin-playwright]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+      - name: Merge json reports
+        run: pnpm exec playwright merge-reports --reporter json ./all-blob-reports
+      - name: Cache test-results.json
+        uses: actions/cache/save@v4
+        with:
+          path: test-results.json
+          key: test-results-${{ github.run_id }}
