@@ -64,9 +64,9 @@ jobs:
           restore-keys: |
             test-results-*
       - name: Run test
-        run: pnpm exec playwright test -c playwright-with-tenbin.config.js
+        run: pnpm exec playwright test
         env:
-          # splitTests function use these environment variables
+          # these variables are used in playwright.config.js
           TENBIN_SHARD: ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
           REPORT_FILE_NAME: report-${{ matrix.shardIndex }}.zip
       # see: https://playwright.dev/docs/test-sharding#github-actions-example
