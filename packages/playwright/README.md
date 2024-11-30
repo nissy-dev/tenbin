@@ -4,13 +4,40 @@
 
 ## Usage
 
+This package provides one function:
+
+### `splitTests`
+
+`splitTests` function divides test files based on the past [Playwright JSON report](https://playwright.dev/docs/test-reporters#json-reporter) specified in `reportFile`. It considers only files matching the `pattern` and ensures that each split has a balanced total execution time.
+
+```ts
+import { defineConfig } from "@playwright/test";
+import { splitTests } from "@tenbin/playwright";
+
+export default defineConfig({
+  testMatch: splitTests({
+    shard: "1/3",
+    pattern: ["tests/**.test.ts"],
+    reportFile: "./test-results.json",
+  }),
+});
+```
+
+Options:
+
+- `shard`: test suite shard to execute in a format of `<index>/<count>`
+- `pattern`: glob pattern that defines which test files should be executed
+- `reportFile`: path to previous Playwright JSON report
+
+## Example
+
 Install:
 
 ```sh
 npm i @tenbin/playwright -D
 ```
 
-Playwright configuration:
+Configuration:
 
 ```js
 import { defineConfig } from "@playwright/test";
@@ -55,7 +82,7 @@ jobs:
       - name: Run build
         run: pnpm run build
       # Restore test-results.json file, which records the execution time of each test file.
-      # splitTests function use this file for sharding.
+      # splitTests function uses this file for sharding.
       - name: Restore test-results.json
         uses: actions/cache/restore@v4
         with:

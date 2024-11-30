@@ -2,6 +2,8 @@
 
 Tenbin provides tools to minimize the differences in test execution times across shards.
 
+![Tenbin provides tools to minimize the differences in test execution times across shards.](./assets/tenbin-abstract.png)
+
 ## Usage
 
 - [Jest](./packages/jest/README.md)

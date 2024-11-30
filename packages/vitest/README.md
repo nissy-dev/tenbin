@@ -4,13 +4,39 @@
 
 ## Usage
 
+This package provide two modules:
+
+### `TenbinReporter`
+
+This module is served as the default export from `@tenbin/vitest/reporter`.
+
+`TenbinReporter` generates a JSON report showing the execution time (in seconds) for each test file, as shown below:
+
+```json:tenbin-report.json
+{
+  "tests/file-a.test.ts": 1.223,
+  "tests/file-b.test.ts": 2.334,
+  ...
+}
+```
+
+The report is saved as `tenbin-report.json` in the current working directory (cwd). This file is uploaded to external storage, such as S3, and is used by `TenbinSequencer` when running next tests. In the case of GitHub Actions, the file can be stored using a cache that persists between workflows. (See the Example section for details.)
+
+### `TenbinSequencer`
+
+This module is served as the default export from `@tenbin/vitest/sequencer`.
+
+`TenbinSequencer` reads the `tenbin-report.json` file from the current working directory (cwd) and splits tests to minimize the differences in test execution times across shards For test files not listed in `tenbin-report.json`, the execution time is assumed to be 0 seconds. If the tenbin-report.json file is not found, the shards are split randomly.
+
+## Example
+
 Install:
 
 ```sh
 npm i @tenbin/vitest -D
 ```
 
-Vitest configuration:
+Configuration:
 
 ```ts
 import TenbinReporter from "@tenbin/vitest/reporter";
@@ -55,8 +81,8 @@ jobs:
         run: pnpm install
       - name: Run build
         run: pnpm run build
-      # Restore the tenbin-report.json file, which records the execution time of each test file.
-      # @tenbin/vitest/sequencer use this file for sharding.
+      # Restore tenbin-report.json file, which records the execution time of each test file.
+      # @tenbin/vitest/sequencer uses this file for sharding.
       - name: Restore tenbin-report.json
         id: tenbin-report-cache
         uses: actions/cache/restore@v4
@@ -67,7 +93,7 @@ jobs:
             tenbin-report-*
       - name: Run test
         run: pnpx vitest --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      # @tenbin/vitest/reporter generates a tenbin-report.json for each shard.
+      # @tenbin/vitest/reporter generates tenbin-report.json for each shard.
       - name: Upload tenbin-report.json
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4

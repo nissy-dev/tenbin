@@ -5,7 +5,7 @@ type Partition<T> = {
 
 /**
  * Partition data into k partitions such that the difference between the sum of the values of each partition is minimized.
- * see: https://en.wikipedia.org/wiki/Largest_differencing_method
+ * cf: https://en.wikipedia.org/wiki/Largest_differencing_method
  */
 export function partition<T>(
   data: T[],
