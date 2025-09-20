@@ -17,6 +17,7 @@ jobs:
         run: pnpm run build
       - name: Publish
         run: ./scripts/release.sh
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+        # use trusted publish
+        # env:
+          # NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_CONFIG_PROVENANCE: true
