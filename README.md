@@ -1,5 +1,8 @@
 # Tenbin ⚖️
 
+> [!NOTE]
+> This package has been archived and is no longer maintained. Please use [flakiness](https://flakiness.io/) instead.
+
 Tenbin provides tools to minimize the differences in test execution times across shards.
 
 ![Tenbin provides tools to minimize the differences in test execution times across shards.](./assets/tenbin-abstract.png)
